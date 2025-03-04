@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:music_app/core/theme/app_pallete.dart';
 import 'package:music_app/core/widgets/custom_field.dart';
 import 'package:music_app/features/auth/repositories/auth_remote_repository.dart';
@@ -58,11 +59,16 @@ class _SignupPageState extends State<SignupPage> {
                     onTap: () async {
                       // if (formKey.currentState.validate()) {
                       // Call the API to register
-                      await AuthRemoteRepository().signup(
+                      final res = await AuthRemoteRepository().signup(
                         name: nameController.text,
                         email: emailController.text,
                         password: passwordController.text,
                       );
+                      final val = switch (res) {
+                        Left(value: final l) => l,
+                        Right(value: final r) => r.toString(),
+                      };
+                      print(val);
                       // }
                     },
                   ),
