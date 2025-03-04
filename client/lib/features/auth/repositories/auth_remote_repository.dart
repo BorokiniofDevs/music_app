@@ -1,10 +1,11 @@
 import 'dart:convert';
-
-import 'package:fpdart/fpdart.dart';
+import 'package:fpdart/fpdart.dart' hide State;
 import 'package:http/http.dart' as http;
+import 'package:music_app/core/failure/app_failure.dart';
+import 'package:music_app/features/auth/model/user_model.dart';
 
 class AuthRemoteRepository {
-  Future<Either<String, Map<String, dynamic>>> signup({
+  Future<Either<AppFailure, UserModel>> signup({
     required String name,
     required String email,
     required String password,
@@ -17,20 +18,24 @@ class AuthRemoteRepository {
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'name': name, 'email': email, 'password': password}),
       );
+      final resBodyMap = jsonDecode(response.body) as Map<String, dynamic>;
+      // Left({"detail":"User already exist"})
       if (response.statusCode != 201) {
         print('Failed to register user');
-        return Left(response.body);
+        return Left(AppFailure(resBodyMap['detail']));
       }
-      final user = jsonDecode(response.body) as Map<String, dynamic>;
-      print(user);
-      return Right(user);
+      print(resBodyMap);
+      return Right(UserModel.fromMap(resBodyMap));
     } catch (e) {
       print(e);
-      return Left(e.toString());
+      return Left(AppFailure(e.toString()));
     }
   }
 
-  Future<void> login({required String email, required String password}) async {
+  Future<Either<AppFailure, UserModel>> login({
+    required String email,
+    required String password,
+  }) async {
     // Call the API to login
     try {
       final response = await http.post(
@@ -41,9 +46,16 @@ class AuthRemoteRepository {
       );
 
       print(response.body);
-      print(response.statusCode);
+      final resBodyMap = jsonDecode(response.body) as Map<String, dynamic>;
+
+      if (response.statusCode != 200) {
+        print('Failed to login user');
+        return Left(AppFailure(resBodyMap['detail']));
+      }
+      return Right(UserModel.fromMap(resBodyMap));
     } catch (e) {
       print(e);
+      return Left(AppFailure(e.toString()));
     }
   }
 }

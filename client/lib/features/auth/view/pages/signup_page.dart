@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fpdart/fpdart.dart';
+import 'package:fpdart/fpdart.dart' hide State;
 import 'package:music_app/core/theme/app_pallete.dart';
 import 'package:music_app/core/widgets/custom_field.dart';
 import 'package:music_app/features/auth/repositories/auth_remote_repository.dart';
