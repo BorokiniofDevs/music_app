@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart' hide State;
 import 'package:music_app/core/theme/app_pallete.dart';
 import 'package:music_app/core/widgets/custom_field.dart';
 import 'package:music_app/features/auth/repositories/auth_remote_repository.dart';
 import 'package:music_app/features/auth/view/pages/login_page.dart';
 import 'package:music_app/features/auth/view/widgets/auth_gradient_button.dart';
+import 'package:music_app/features/auth/view_model/auth_view_model.dart';
 
-class SignupPage extends StatefulWidget {
+class SignupPage extends ConsumerStatefulWidget {
   const SignupPage({super.key});
 
   @override
-  State<SignupPage> createState() => _SignupPageState();
+  ConsumerState<SignupPage> createState() => _SignupPageState();
 }
 
-class _SignupPageState extends State<SignupPage> {
+class _SignupPageState extends ConsumerState<SignupPage> {
   final nameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -29,6 +31,8 @@ class _SignupPageState extends State<SignupPage> {
 
   @override
   Widget build(BuildContext context) {
+    final val = ref.watch(authViewModelProvider);
+    print(val);
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(15.0),
@@ -57,19 +61,16 @@ class _SignupPageState extends State<SignupPage> {
                   AuthGradientButton(
                     buttonText: 'Sign up',
                     onTap: () async {
-                      // if (formKey.currentState.validate()) {
-                      // Call the API to register
-                      final res = await AuthRemoteRepository().signup(
-                        name: nameController.text,
-                        email: emailController.text,
-                        password: passwordController.text,
-                      );
-                      final val = switch (res) {
-                        Left(value: final l) => l,
-                        Right(value: final r) => r.toString(),
-                      };
-                      print(val);
-                      // }
+                      if (formKey.currentState!.validate()) {
+                        // Call the API to register
+                        await ref
+                            .read(authViewModelProvider.notifier)
+                            .signUpUser(
+                              name: nameController.text,
+                              email: emailController.text,
+                              password: passwordController.text,
+                            );
+                      }
                     },
                   ),
                   const SizedBox(height: 20),

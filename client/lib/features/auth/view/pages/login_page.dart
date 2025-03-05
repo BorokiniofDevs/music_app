@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:fpdart/fpdart.dart' hide State;
 import 'package:music_app/core/theme/app_pallete.dart';
 import 'package:music_app/core/widgets/custom_field.dart';
 import 'package:music_app/features/auth/repositories/auth_remote_repository.dart';
@@ -56,10 +56,15 @@ class _LoginPageState extends State<LoginPage> {
                     onTap: () async {
                       // if (formKey.currentState.validate()) {
                       // Call the API to login
-                      await AuthRemoteRepository().login(
+                      final res = await AuthRemoteRepository().login(
                         email: emailController.text,
                         password: passwordController.text,
                       );
+                      final val = switch (res) {
+                        Left(value: final l) => l,
+                        Right(value: final r) => r,
+                      };
+                      print(val);
                       // }
                     },
                   ),

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:fpdart/fpdart.dart' hide State;
 import 'package:http/http.dart' as http;
+import 'package:music_app/core/constants/server_constants.dart';
 import 'package:music_app/core/failure/app_failure.dart';
 import 'package:music_app/features/auth/model/user_model.dart';
 
@@ -13,7 +14,7 @@ class AuthRemoteRepository {
     // Call the API to register
     try {
       final response = await http.post(
-        Uri.parse('http://192.168.46.154:8000/auth/signup'),
+        Uri.parse('${ServerConstants.serverURL}/auth/signup'),
 
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'name': name, 'email': email, 'password': password}),
@@ -39,7 +40,7 @@ class AuthRemoteRepository {
     // Call the API to login
     try {
       final response = await http.post(
-        Uri.parse('http://192.168.46.154:8000/auth/login'),
+        Uri.parse('${ServerConstants.serverURL}/auth/login'),
 
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'email': email, 'password': password}),
