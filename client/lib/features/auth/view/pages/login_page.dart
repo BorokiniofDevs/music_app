@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fpdart/fpdart.dart' hide State;
 import 'package:music_app/core/theme/app_pallete.dart';
 import 'package:music_app/core/utils.dart';
 import 'package:music_app/core/widgets/custom_field.dart';
 import 'package:music_app/core/widgets/loader.dart';
-import 'package:music_app/features/auth/repositories/auth_remote_repository.dart';
 import 'package:music_app/features/auth/view/pages/signup_page.dart';
 import 'package:music_app/features/auth/view/widgets/auth_gradient_button.dart';
 import 'package:music_app/features/auth/view_model/auth_view_model.dart';
+import 'package:music_app/features/home/view/page/home__page.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({super.key});
@@ -31,7 +30,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    final isLoading = ref.watch(authViewModelProvider)?.isLoading == true;
+    final isLoading = ref.watch(
+      authViewModelProvider.select((val) => val?.isLoading == true),
+    );
 
     ref.listen(authViewModelProvider, (_, next) {
       next?.when(
@@ -39,9 +40,11 @@ class _LoginPageState extends ConsumerState<LoginPage> {
         data: (data) {
           showSnackbar(context, 'User logged in successfully!');
           // TODO: Navigate to the home page
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(builder: (context) => const HomePage()),
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => const HomePage()),
+            (_) => false,
+          );
         },
         error: (error, st) {
           showSnackbar(context, error.toString());

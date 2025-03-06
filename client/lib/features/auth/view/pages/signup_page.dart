@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fpdart/fpdart.dart' hide State;
 import 'package:music_app/core/theme/app_pallete.dart';
 import 'package:music_app/core/utils.dart';
 import 'package:music_app/core/widgets/custom_field.dart';
 import 'package:music_app/core/widgets/loader.dart';
-import 'package:music_app/features/auth/repositories/auth_remote_repository.dart';
 import 'package:music_app/features/auth/view/pages/login_page.dart';
 import 'package:music_app/features/auth/view/widgets/auth_gradient_button.dart';
 import 'package:music_app/features/auth/view_model/auth_view_model.dart';
@@ -33,7 +31,9 @@ class _SignupPageState extends ConsumerState<SignupPage> {
 
   @override
   Widget build(BuildContext context) {
-    final isLoading = ref.watch(authViewModelProvider)?.isLoading == true;
+    final isLoading = ref.watch(
+      authViewModelProvider.select((val) => val?.isLoading == true),
+    );
 
     ref.listen(authViewModelProvider, (_, next) {
       next?.when(
