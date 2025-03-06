@@ -1,9 +1,18 @@
 import 'dart:convert';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart' hide State;
 import 'package:http/http.dart' as http;
 import 'package:music_app/core/constants/server_constants.dart';
 import 'package:music_app/core/failure/app_failure.dart';
 import 'package:music_app/features/auth/model/user_model.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+part 'auth_remote_repository.g.dart';
+
+@riverpod
+AuthRemoteRepository authRemoteRepository(Ref ref) {
+  return AuthRemoteRepository();
+}
 
 class AuthRemoteRepository {
   Future<Either<AppFailure, UserModel>> signup({
@@ -53,7 +62,11 @@ class AuthRemoteRepository {
         print('Failed to login user');
         return Left(AppFailure(resBodyMap['detail']));
       }
-      return Right(UserModel.fromMap(resBodyMap));
+      return Right(
+        UserModel.fromMap(
+          resBodyMap['user'],
+        ).copyWith(token: resBodyMap['token']),
+      );
     } catch (e) {
       print(e);
       return Left(AppFailure(e.toString()));

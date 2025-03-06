@@ -7,6 +7,8 @@ from database import get_db
 
 import uuid
 import bcrypt
+import jwt
+
 
 router = APIRouter()
 @router.post("/signup", status_code=201)
@@ -47,5 +49,6 @@ def login_user(user: UserLogin, db: Session= Depends(get_db)):
     
     if not is_match:
         raise HTTPException(status_code=400, detail="Invalid credentials")
-    pass
-    return user_db
+
+    token = jwt.encode({'id': user_db.id}, 'password_key')
+    return {'token': token, 'user': user_db}
