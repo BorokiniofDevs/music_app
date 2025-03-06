@@ -91,8 +91,8 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                             buttonText: 'Sign up',
                             onTap: () async {
                               if (formKey.currentState!.validate()) {
-                                // Call the API to register
-                                await ref
+                                // Call the API to login
+                                ref
                                     .read(authViewModelProvider.notifier)
                                     .signUpUser(
                                       name: nameController.text,

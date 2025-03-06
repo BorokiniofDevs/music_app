@@ -1,4 +1,5 @@
 import 'package:fpdart/fpdart.dart';
+import 'package:music_app/core/failure/app_failure.dart';
 import 'package:music_app/features/auth/model/user_model.dart';
 import 'package:music_app/features/auth/repositories/auth_local_repository.dart';
 import 'package:music_app/features/auth/repositories/auth_remote_repository.dart';
@@ -66,6 +67,14 @@ class AuthViewModel extends _$AuthViewModel {
     final token = _authLocalRepository.getToken();
     if (token != null) {
       //  TODO: send a request to the server to get user data
+      final res = await _authRemoteRepository.getCurrentUserData(token);
+      final val = switch (res) {
+        Left(value: final l) =>
+          state = AsyncValue.error(l.message, StackTrace.current),
+        Right(value: final r) => AsyncValue.data(r),
+      };
+      print(val);
+      return val.value;
     }
   }
 }
