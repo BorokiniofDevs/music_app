@@ -7,6 +7,7 @@ import 'package:music_app/core/theme/app_pallete.dart';
 import 'package:music_app/core/utils.dart';
 import 'package:music_app/core/widgets/custom_field.dart';
 import 'package:flex_color_picker/flex_color_picker.dart';
+import 'package:music_app/features/home/view/widgets/audio_wave.dart';
 
 class UploadSongPage extends ConsumerStatefulWidget {
   const UploadSongPage({Key? key}) : super(key: key);
@@ -106,12 +107,14 @@ class _UploadSongPageState extends ConsumerState<UploadSongPage> {
                           ),
                 ),
                 const SizedBox(height: 40),
-                CustomField(
-                  hintText: 'Select a Song',
-                  controller: null,
-                  readOnly: true,
-                  onTap: selectAudio,
-                ),
+                selectedAudio != null
+                    ? AudioWave(path: selectedAudio!.path)
+                    : CustomField(
+                      hintText: 'Select a Song',
+                      controller: null,
+                      readOnly: true,
+                      onTap: selectAudio,
+                    ),
                 const SizedBox(height: 20),
                 CustomField(
                   hintText: 'Song Artist',
