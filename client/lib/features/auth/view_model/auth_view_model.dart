@@ -11,6 +11,7 @@ class AuthViewModel extends _$AuthViewModel {
   late AuthRemoteRepository _authRemoteRepository;
   late AuthLocalRepository _authLocalRepository;
   late CurrentUserNotifier _currentUserNotifier;
+
   @override
   AsyncValue<UserModel>? build() {
     _authRemoteRepository = ref.watch(authRemoteRepositoryProvider);
@@ -34,6 +35,7 @@ class AuthViewModel extends _$AuthViewModel {
       email: email,
       password: password,
     );
+
     final val = switch (res) {
       Left(value: final l) =>
         state = AsyncValue.error(l.message, StackTrace.current),
@@ -51,6 +53,7 @@ class AuthViewModel extends _$AuthViewModel {
       email: email,
       password: password,
     );
+
     final val = switch (res) {
       Left(value: final l) =>
         state = AsyncValue.error(l.message, StackTrace.current),
@@ -59,9 +62,8 @@ class AuthViewModel extends _$AuthViewModel {
     print(val);
   }
 
-  AsyncValue<UserModel> _loginSuccess(UserModel user) {
+  AsyncValue<UserModel>? _loginSuccess(UserModel user) {
     _authLocalRepository.setToken(user.token);
-    // TODO: save user data to local storage
     _currentUserNotifier.addUser(user);
     return state = AsyncValue.data(user);
   }
@@ -69,17 +71,18 @@ class AuthViewModel extends _$AuthViewModel {
   Future<UserModel?> getData() async {
     state = const AsyncValue.loading();
     final token = _authLocalRepository.getToken();
+
     if (token != null) {
-      //  TODO: send a request to the server to get user data
       final res = await _authRemoteRepository.getCurrentUserData(token);
       final val = switch (res) {
         Left(value: final l) =>
           state = AsyncValue.error(l.message, StackTrace.current),
         Right(value: final r) => _getDataSuccess(r),
       };
-      print(val);
+
       return val.value;
     }
+
     return null;
   }
 
