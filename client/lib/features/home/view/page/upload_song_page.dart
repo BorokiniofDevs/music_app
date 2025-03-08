@@ -7,6 +7,7 @@ import 'package:music_app/core/theme/app_pallete.dart';
 import 'package:music_app/core/utils.dart';
 import 'package:music_app/core/widgets/custom_field.dart';
 import 'package:flex_color_picker/flex_color_picker.dart';
+import 'package:music_app/features/home/repository/home_repository.dart';
 import 'package:music_app/features/home/view/widgets/audio_wave.dart';
 
 class UploadSongPage extends ConsumerStatefulWidget {
@@ -43,7 +44,6 @@ class _UploadSongPageState extends ConsumerState<UploadSongPage> {
     }
   }
 
-  @override
   void dispose() {
     songNameController.dispose();
     artistNameController.dispose();
@@ -55,7 +55,14 @@ class _UploadSongPageState extends ConsumerState<UploadSongPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Upload Song'),
-        actions: [IconButton(onPressed: () {}, icon: Icon(Icons.check))],
+        actions: [
+          IconButton(
+            onPressed: () async {
+              await HomeRepository().uploadSong(selectedImage!, selectedAudio!);
+            },
+            icon: Icon(Icons.check),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Padding(

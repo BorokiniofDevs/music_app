@@ -1,7 +1,7 @@
 import jwt
 from fastapi import Header, HTTPException
 
-def auth_middlewares(x_auth_token: str = Header()):
+def auth_middleware(x_auth_token: str = Header()):
      #get the user token from the headers
     try:
         if not x_auth_token:

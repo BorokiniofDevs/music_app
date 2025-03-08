@@ -14,7 +14,7 @@ class AppTheme {
       bodyColor: Pallete.whiteColor,
     ),
     inputDecorationTheme: InputDecorationTheme(
-      contentPadding: const EdgeInsets.all(20),
+      contentPadding: const EdgeInsets.all(10),
       enabledBorder: _border(Pallete.borderColor),
       focusedBorder: _border(const Color.fromARGB(255, 156, 88, 25)),
       hintStyle: GoogleFonts.tenorSans(

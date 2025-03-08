@@ -2,7 +2,7 @@ from fastapi import HTTPException, APIRouter, Depends, Header
 from pydantic_schemas.user_create import UserCreate
 from models.user import User 
 from pydantic_schemas.user_login import UserLogin
-from middleware.auth_middleware import auth_middlewares
+from middleware.auth_middleware import auth_middleware
 from sqlalchemy.orm import Session
 from database import get_db
 
@@ -55,7 +55,7 @@ def login_user(user: UserLogin, db: Session= Depends(get_db)):
     return {'token': token, 'user': user_db}
 
 @router.get('/')
-def current_user_data(db: Session= Depends(get_db), user_dict: dict = Depends(auth_middlewares)):
+def current_user_data(db: Session= Depends(get_db), user_dict: dict = Depends(auth_middleware)):
      
     user = db.query(User).filter(User.id == user_dict['uid']).first()
     # uid = user_dict.get('uid')

@@ -8,6 +8,7 @@ import 'package:music_app/features/auth/view/pages/signup_page.dart';
 import 'package:music_app/features/auth/view/widgets/auth_gradient_button.dart';
 import 'package:music_app/features/auth/view_model/auth_view_model.dart';
 import 'package:music_app/features/home/view/page/home__page.dart';
+import 'package:music_app/features/home/view/page/upload_song_page.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({super.key});
@@ -42,7 +43,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
           // TODO: Navigate to the home page
           Navigator.pushAndRemoveUntil(
             context,
-            MaterialPageRoute(builder: (context) => const HomePage()),
+            MaterialPageRoute(builder: (context) => const UploadSongPage()),
             (_) => false,
           );
         },
