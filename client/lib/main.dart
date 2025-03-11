@@ -28,7 +28,7 @@ class MyApp extends ConsumerWidget {
     return MaterialApp(
       title: 'Music_App',
       theme: AppTheme.darkThemeMode,
-      home: currentUser == null ? const SignupPage() : const UploadSongPage(),
+      home: currentUser == null ? const SignupPage() : const HomePage(),
     );
   }
 }

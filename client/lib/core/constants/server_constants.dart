@@ -1,3 +1,3 @@
 class ServerConstants {
-  static const serverURL = 'http://192.168.51.154:8000';
+  static const serverURL = 'http://192.168.179.154:8000';
 }

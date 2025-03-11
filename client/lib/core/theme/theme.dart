@@ -18,8 +18,8 @@ class AppTheme {
       enabledBorder: _border(Pallete.borderColor),
       focusedBorder: _border(const Color.fromARGB(255, 156, 88, 25)),
       hintStyle: GoogleFonts.tenorSans(
-        fontSize: 10,
-        color: Pallete.borderColor,
+        fontSize: 12,
+        color: Pallete.whiteColor,
       ), // Hint Text
       labelStyle: GoogleFonts.tenorSans(
         fontSize: 12,
@@ -29,6 +29,9 @@ class AppTheme {
         fontSize: 10,
         color: Pallete.whiteColor,
       ), // Floating Label
+    ),
+    bottomNavigationBarTheme: BottomNavigationBarThemeData(
+      backgroundColor: Pallete.backgroundColor,
     ),
   );
 }

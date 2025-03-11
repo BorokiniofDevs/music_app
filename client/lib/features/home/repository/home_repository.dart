@@ -1,31 +1,58 @@
 import 'dart:io';
 
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:http/http.dart' as http;
 import 'package:music_app/core/constants/server_constants.dart';
+import 'package:music_app/core/failure/app_failure.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+part 'home_repository.g.dart';
+
+@riverpod
+HomeRepository homeRepository(Ref ref) {
+  return HomeRepository();
+}
 
 class HomeRepository {
-  Future<void> uploadSong(File selectedImage, File selectedAudio) async {
-    final request = http.MultipartRequest(
-      'POST',
-      Uri.parse('${ServerConstants.serverURL}/song/upload'),
-    );
-    // Add your implementation here
-    request
-      ..files.addAll([
-        await http.MultipartFile.fromPath('song', selectedAudio.path),
-        await http.MultipartFile.fromPath('thumbnail', selectedImage.path),
-      ])
-      ..fields.addAll({
-        'artist': 'Taylor Swift',
-        'song_name': 'Love Story',
-        'hex_code': 'FFFFFF',
-      })
-      ..headers.addAll({
-        'x-auth-token':
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjA1N2U0OTFlLTYzMmEtNDc1NC1iZjQ1LWE5N2ZlYThiMDdhNSJ9.kb76V5IEe2svAE6gMGeh4lOkF1iaPmoBN-mkjQc_ATI',
-      });
+  Future<Either<AppFailure, String>> uploadSong({
+    required File selectedAudio,
+    required File selectedThumbnail,
+    required String songName,
+    required String artist,
+    required String hexCode,
+    required String token,
+  }) async {
+    try {
+      final request = http.MultipartRequest(
+        'POST',
+        Uri.parse('${ServerConstants.serverURL}/song/upload'),
+      );
+      // Add your implementation here
+      request
+        ..files.addAll([
+          await http.MultipartFile.fromPath('song', selectedAudio.path),
+          await http.MultipartFile.fromPath(
+            'thumbnail',
+            selectedThumbnail.path,
+          ),
+        ])
+        ..fields.addAll({
+          'artist': artist,
+          'song_name': songName,
+          'hex_code': hexCode,
+        })
+        ..headers.addAll({'x-auth-token': token});
 
-    final res = await request.send();
-    print(res);
+      final res = await request.send();
+      print(res);
+
+      if (res.statusCode != 201) {
+        return Left(AppFailure(await res.stream.bytesToString()));
+      }
+      return Right(await res.stream.bytesToString());
+    } catch (e) {
+      return left(AppFailure(e.toString()));
+    }
   }
 }
