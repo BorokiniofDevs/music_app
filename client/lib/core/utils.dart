@@ -43,7 +43,7 @@ Future<File?> pickAudio() async {
 }
 
 String rgbToHex(Color color) {
-  return 'rgb(${color.r.round().toRadixString(16).padLeft(2, '0')}${color.g.round().toRadixString(16).padLeft(2, '0')}${color.b.round().toRadixString(16).padLeft(2, '0')})';
+  return '${color.r.round().toRadixString(16).padLeft(2, '0')}${color.g.round().toRadixString(16).padLeft(2, '0')}${color.b.round().toRadixString(16).padLeft(2, '0')})';
 }
 
 Color hexToColor(String hexCode) {
