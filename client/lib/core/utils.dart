@@ -43,9 +43,25 @@ Future<File?> pickAudio() async {
 }
 
 String rgbToHex(Color color) {
-  return '${color.r.round().toRadixString(16).padLeft(2, '0')}${color.g.round().toRadixString(16).padLeft(2, '0')}${color.b.round().toRadixString(16).padLeft(2, '0')})';
+  return '#${(color.r * 255).toInt().toRadixString(16).padLeft(2, '0')}'
+          '${(color.g * 255).toInt().toRadixString(16).padLeft(2, '0')}'
+          '${(color.b * 255).toInt().toRadixString(16).padLeft(2, '0')}'
+      .toUpperCase();
 }
 
-Color hexToColor(String hexCode) {
-  return Color(int.parse(hexCode.substring(1, 7), radix: 16) + 0xFF000000);
+Color hexToColor(String hex) {
+  hex = hex.replaceAll("#", ""); // Remove # if present
+
+  if (hex.length == 6) {
+    hex = "FF$hex"; // Add full opacity if missing
+  }
+
+  Color color = Color(int.parse(hex, radix: 16));
+
+  // ✅ Print debug info
+  print(
+    'Converted hex: #$hex → Color(r: ${color.r}, g: ${color.g}, b: ${color.b}, a: ${color.a})',
+  );
+
+  return color;
 }

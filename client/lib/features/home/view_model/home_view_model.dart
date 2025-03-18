@@ -46,6 +46,7 @@ class HomeViewModel extends _$HomeViewModel {
       hexCode: rgbToHex(selectedColor),
       token: ref.read(currentUserNotifierProvider)!.token,
     );
+    print(res);
 
     final val = switch (res) {
       Left(value: final l) =>

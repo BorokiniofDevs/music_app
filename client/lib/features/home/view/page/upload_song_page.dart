@@ -16,7 +16,7 @@ class UploadSongPage extends ConsumerStatefulWidget {
   const UploadSongPage({super.key});
 
   @override
-  _UploadSongPageState createState() => _UploadSongPageState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _UploadSongPageState();
 }
 
 class _UploadSongPageState extends ConsumerState<UploadSongPage> {
@@ -172,6 +172,7 @@ class _UploadSongPageState extends ConsumerState<UploadSongPage> {
                             onColorChanged: (Color color) {
                               setState(() {
                                 selectedColor = color;
+                                print('Selected color: $selectedColor');
                               });
                             },
                           ),
