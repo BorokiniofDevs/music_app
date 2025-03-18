@@ -13,7 +13,7 @@ import 'package:music_app/features/home/view/widgets/audio_wave.dart';
 import 'package:music_app/features/home/view_model/home_view_model.dart';
 
 class UploadSongPage extends ConsumerStatefulWidget {
-  const UploadSongPage({Key? key}) : super(key: key);
+  const UploadSongPage({super.key});
 
   @override
   _UploadSongPageState createState() => _UploadSongPageState();
@@ -47,6 +47,7 @@ class _UploadSongPageState extends ConsumerState<UploadSongPage> {
     }
   }
 
+  @override
   void dispose() {
     songNameController.dispose();
     artistNameController.dispose();

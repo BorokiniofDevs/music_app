@@ -1,13 +1,25 @@
 import 'dart:io';
 import 'dart:ui';
 
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:music_app/core/failure/app_failure.dart';
 import 'package:music_app/core/provider/current_user_notifier.dart';
 import 'package:music_app/core/utils.dart';
+import 'package:music_app/features/home/model/song_model.dart';
 import 'package:music_app/features/home/repository/home_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'home_view_model.g.dart';
+
+@riverpod
+Future<List<SongModel>> getAllSongs(Ref ref) async {
+  final token = ref.watch(currentUserNotifierProvider)!.token;
+  final res = await ref.watch(homeRepositoryProvider).getAllSongs(token: token);
+
+  return switch (res) {
+    Left(value: final l) => throw l.message,
+    Right(value: final r) => r,
+  };
+}
 
 @riverpod
 class HomeViewModel extends _$HomeViewModel {

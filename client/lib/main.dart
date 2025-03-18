@@ -5,7 +5,6 @@ import 'package:music_app/core/theme/theme.dart';
 import 'package:music_app/features/auth/view/pages/signup_page.dart';
 import 'package:music_app/features/auth/view_model/auth_view_model.dart';
 import 'package:music_app/features/home/view/page/home__page.dart';
-import 'package:music_app/features/home/view/page/upload_song_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

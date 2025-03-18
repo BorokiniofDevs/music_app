@@ -7,7 +7,6 @@ import 'package:music_app/core/widgets/loader.dart';
 import 'package:music_app/features/auth/view/pages/signup_page.dart';
 import 'package:music_app/features/auth/view/widgets/auth_gradient_button.dart';
 import 'package:music_app/features/auth/view_model/auth_view_model.dart';
-import 'package:music_app/features/home/view/page/home__page.dart';
 import 'package:music_app/features/home/view/page/upload_song_page.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
